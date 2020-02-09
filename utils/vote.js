@@ -94,12 +94,9 @@ async function upvote(id,bot,json){
 	logger.increment("votecount");
 }
 
-//TODO
-/*
 app.listen(3001,() => {
 	console.log("\x1b[33m","Voting is listening on port 3001!");
 });
-*/
 
 function patreonMsg(amount){
 	if(!amount||amount==0)

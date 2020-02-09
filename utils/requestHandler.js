@@ -1,6 +1,5 @@
 const HTTPS = require("https");
-//TODO
-const secret = require("../../tokens/scuttester-auth.json");
+const secret = require("../../tokens/owo-auth.json");
 
 exports.getUser = function(id){
 	return new Promise((resolve,reject) => {

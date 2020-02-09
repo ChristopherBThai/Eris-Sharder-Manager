@@ -26,3 +26,12 @@ exports.publish = async function(channel,message=true){
 		message = JSON.stringify(message);
 	return await client.publish(channel,message);
 }
+
+exports.set = function(key,val){
+	return new Promise(function(res,rej){
+		client.set(key,val,function(err,val){
+			if(err) rej(err);
+			else res(val);
+		});
+	});
+}

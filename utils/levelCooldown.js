@@ -3,7 +3,6 @@ const redis = require('./redis.js');
 async function resetCooldown(){
 	try{
 		let result = await redis.del("user_xp_cooldown");
-		console.log(result);
 		if(!result)
 			console.error("["+(new Date()).toLocaleString()+"] Something might be wrong with xp cooldowns... Please double check.");
 	}catch(err){
@@ -11,4 +10,4 @@ async function resetCooldown(){
 	}
 }
 
-//setInterval(resetCooldown,60000);
+setInterval(resetCooldown,60000);

@@ -6,12 +6,13 @@ const secret = require('../tokens/wsserver.json');
 const levelCooldown = require('./utils/levelCooldown.js');
 const lottery = require('./utils/lottery.js');
 const vote = require('./utils/vote.js');
+const ratelimiter = require('./utils/globalRatelimitBucket.js');
 
 app.use(express.json());       // to support JSON-encoded bodies
 app.use(express.urlencoded()); // to support URL-encoded bodies
 
-const shards = 200;
-const sharders = 2;
+const shards = 220;
+const sharders = 1;
 const sharder = [];
 
 var minShards = Math.floor(shards/sharders);
@@ -96,4 +97,8 @@ app.get('/botinfo',function(req,res){
 
 app.get('/totalShards',function(req,res){
 	res.send({totalShards:shards,sharders});
+});
+
+app.listen(secret.port,() => {
+	console.log("\x1b[33m","Sharding manager is listening on port "+secret.port+"!");
 });

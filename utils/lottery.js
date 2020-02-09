@@ -4,6 +4,8 @@ const redis = require('./redis.js');
 const logger = require('./logger.js');
 
 async function pickWinner(){
+	// Resets dily weapons
+	redis.publish("resetDailyWeapons",{clusterID:0});
 	console.log("Picking lottery winner...");
 	let sql = "SELECT id,amount,channel FROM lottery WHERE valid = 1;"+
 		"SELECT SUM(amount) AS sum,COUNT(id) AS count FROM lottery WHERE valid = 1;";
@@ -78,5 +80,4 @@ function setTime(){
 	let timer = setTimeout(pickWinner,mill);
 }
 
-//TODO
-//setTime();
+setTime();
