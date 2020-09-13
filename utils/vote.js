@@ -59,7 +59,7 @@ async function upvote(id,bot,json){
 		if(weekend)
 			reply += "\n**⛱ |** It's the weekend! You also earned a bonus of **"+weekendBonus+"** cowoncy!";
 		reply += box.text;
-		redis.publish("msgUser",{userID:id,msg:reply,clusterID:0});
+		redis.publish("msgUser",{userID:id,msg:reply,shardID:0});
 
 	}else if(result[0][0].time>=11){
 		let box = {};
@@ -84,11 +84,11 @@ async function upvote(id,bot,json){
 		if(weekend)
 			reply += "\n**⛱ |** It's the weekend! You also earned a bonus of **"+weekendBonus+"** cowoncy!";
 		reply += box.text;
-		redis.publish("msgUser",{userID:id,msg:reply,clusterID:0});
+		redis.publish("msgUser",{userID:id,msg:reply,shardID:0});
 
 	}else{
 		let reply = "You need to wait "+(12-result[0][0].time)+" hours before voting again!";
-		redis.publish("msgUser",{userID:id,msg:reply,clusterID:0});
+		redis.publish("msgUser",{userID:id,msg:reply,shardID:0});
 	}
 	console.log(id+" has voted!");
 	logger.increment("votecount");

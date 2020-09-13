@@ -5,7 +5,7 @@ const logger = require('./logger.js');
 
 async function pickWinner(){
 	// Resets dily weapons
-	redis.publish("resetDailyWeapons",{clusterID:0});
+	redis.publish("resetDailyWeapons",{shardID:0});
 	console.log("Picking lottery winner...");
 	let sql = "SELECT id,amount,channel FROM lottery WHERE valid = 1;"+
 		"SELECT SUM(amount) AS sum,COUNT(id) AS count FROM lottery WHERE valid = 1;";
@@ -57,7 +57,7 @@ function msgUsers(winnername,winner,chance,winnerChannel,prize,loser,loserchance
 		return;
 	if(i<0){
 		let msg = "Congrats! You won **"+prize+" cowoncy** from the lottery with a **"+chance+"%** chance to win!";
-		redis.publish("msgUser",{userID:winner,msg,clusterID:0});
+		redis.publish("msgUser",{userID:winner,msg,shardID:0});
 		msg = "Congrats <@"+winner+">! You won **"+prize+"** cowoncy from the lottery with a **"+chance+"%** chance to win!";
 		redis.publish("msgChannel",{channelID:winnerChannel,msg});
 		console.log("\x1b[36m%s\x1b[0m","    "+winnername+" won the lottery");
@@ -65,7 +65,7 @@ function msgUsers(winnername,winner,chance,winnerChannel,prize,loser,loserchance
 		let text = "You lost the lottery...\nYou had a **"+loserchance[i]+"%** chance to win **"+prize+" cowoncy...**";
 		if(winnername!=undefined)
 			text += "\nThe winner was **"+winnername+"** with a **"+chance+"%** chance to win!";
-		redis.publish("msgUser",{userID:loser[i],msg:text,clusterID:0});
+		redis.publish("msgUser",{userID:loser[i],msg:text,shardID:0});
 		console.log("\x1b[36m%s\x1b[0m","    msg sent to "+loser[i]+" for losing");
 	}
 	setTimeout(function(){msgUsers(winnername,winner,chance,winnerChannel,prize,loser,loserchance,i+1)},15000);

@@ -1,9 +1,8 @@
 const mysql = require('mysql');
 const login = require('../../tokens/owo-login.json');
 config = {
-	host: "localhost",
-	user: login.user,
-	password: login.pass,
+	user: login.mysql_user,
+	password: login.mysql_pass,
 	database: "owo",
 	supportBigNumbers: true,
 	bigNumberStrings: true,

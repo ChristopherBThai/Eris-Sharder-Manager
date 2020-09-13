@@ -1,5 +1,9 @@
 const redis = require('redis');
-const client = redis.createClient();
+const login = require('../../tokens/owo-login.json');
+const client = redis.createClient({
+  host: login.redis_host,
+  password: login.redis_pass
+});
 
 client.on('connect',function(){
 	console.log('Redis connected');
@@ -30,6 +34,24 @@ exports.publish = async function(channel,message=true){
 exports.set = function(key,val){
 	return new Promise(function(res,rej){
 		client.set(key,val,function(err,val){
+			if(err) rej(err);
+			else res(val);
+		});
+	});
+}
+
+exports.hgetall = function(key){
+	return new Promise(function(res,rej){
+		client.hgetall(key,function(err,val){
+			if(err) rej(err);
+			else res(val);
+		});
+	});
+}
+
+exports.hmset = function(key,val){
+	return new Promise(function(res,rej){
+		client.hmset(key,val,function(err,val){
 			if(err) rej(err);
 			else res(val);
 		});
