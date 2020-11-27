@@ -9,12 +9,13 @@ const vote = require('./utils/vote.js');
 const ratelimiter = require('./utils/globalRatelimitBucket.js');
 const redis = require('./utils/redis.js');
 const covid = require('./utils/covid.js');
+const patreonPerks = require('./utils/patreonPerks.js');
 
 app.use(express.json());       // to support JSON-encoded bodies
 app.use(express.urlencoded()); // to support URL-encoded bodies
 
-const shards = 400;
-const sharders = 2;
+const shards = 480;
+const sharders = 3;
 /*
 const sharder = [];
 
@@ -38,8 +39,9 @@ for(let i = 0;i<sharders;i++){
 */
 // for now, lets override
 const sharder = [
-	{ shards: 400, firstShardID: 0, lastShardID: 299, shardCount: 300 },
-  { shards: 400, firstShardID: 300, lastShardID: 399, shardCount: 100 }
+	{ shards: 480, firstShardID: 0, lastShardID: 129, shardCount: 130 },
+  { shards: 480, firstShardID: 130, lastShardID: 229, shardCount: 100 },
+  { shards: 480, firstShardID: 230, lastShardID: 479, shardCount: 250 },
 ]
 
 app.get('/sharder-info/:id',function(req,res){
@@ -162,6 +164,19 @@ app.post('/verified/:id', async function(req, res) {
 
 app.get('/covid', function(req, res) {
 	res.send(covid.data());
+});
+
+app.post('/patreon-perks', async function (req, res) {
+	try {
+		if(req.body.password!=imagegenAuth.password) {
+			res.sendStatus(401);
+			return;
+		}
+		await patreonPerks.checkPerks(req.body);
+	} catch (err) {
+		console.error(err);
+		res.sendStatus(400);
+	}
 });
 
 app.listen(secret.port, () => {
