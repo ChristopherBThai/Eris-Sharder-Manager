@@ -45,9 +45,10 @@ async function pickWinner(){
 
 	let winnername = await requestHandler.getUser(winner);
 	if(winnername.username)
-		winnername = winnername.username+'#'+winnername.discriminator;
+		winnername.logname = winnername.username+'#'+winnername.discriminator;
 	else
-		winnername = undefined;
+		winnername.username = undefined;
+		winnername.logname = undefined;
 	msgUsers(winnername,winner,winnerchance,winnerChannel,prize,loser,loserchance,-1);
 	setTime();
 }
@@ -60,11 +61,11 @@ function msgUsers(winnername,winner,chance,winnerChannel,prize,loser,loserchance
 		redis.publish("msgUser",{userID:winner,msg,shardID:0});
 		msg = "Congrats <@"+winner+">! You won **"+prize+"** cowoncy from the lottery with a **"+chance+"%** chance to win!";
 		redis.publish("msgChannel",{channelID:winnerChannel,msg});
-		console.log("\x1b[36m%s\x1b[0m","    "+winnername+" won the lottery");
+		console.log("\x1b[36m%s\x1b[0m","    "+winnername.logname+" won the lottery");
 	}else{
 		let text = "You lost the lottery...\nYou had a **"+loserchance[i]+"%** chance to win **"+prize+" cowoncy...**";
 		if(winnername!=undefined)
-			text += "\nThe winner was **"+winnername+"** with a **"+chance+"%** chance to win!";
+			text += "\nThe winner was **"+winnername.username+"** with a **"+chance+"%** chance to win!";
 		redis.publish("msgUser",{userID:loser[i],msg:text,shardID:0});
 		console.log("\x1b[36m%s\x1b[0m","    msg sent to "+loser[i]+" for losing");
 	}
