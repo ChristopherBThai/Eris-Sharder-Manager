@@ -24,6 +24,6 @@
     "novelcovid": "^3.0.0",
     "redis": "^2.8.0",
     "require-dir": "^1.2.0",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.4.0"
   }
 }
