@@ -44,11 +44,12 @@ async function pickWinner(){
 	}
 
 	let winnername = await requestHandler.getUser(winner);
-	if(winnername.username)
+	if(winnername.username) {
 		winnername.logname = winnername.username+'#'+winnername.discriminator;
-	else
+	} else {
 		winnername.username = undefined;
 		winnername.logname = undefined;
+	}
 	msgUsers(winnername,winner,winnerchance,winnerChannel,prize,loser,loserchance,-1);
 	setTime();
 }
